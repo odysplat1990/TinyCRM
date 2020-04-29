@@ -9,6 +9,7 @@ namespace TinyCrm
         {
             string path = @"C:\Users\ody_s\devel\tinyCRM\productList.txt";
             bool uniqueId = true;
+            Random random = new Random();
 
             if (!File.Exists(path))
             {
@@ -39,7 +40,7 @@ namespace TinyCrm
 
                 if (uniqueId)
                 {
-                    P[i] = new Product(data[0], data[1], data[2], 234234.3M);
+                    P[i] = new Product(data[0], data[1], data[2], Convert.ToDecimal(Math.Round(random.NextDouble() * 1000, 2)));
                 }
                 else
                 {
@@ -49,6 +50,8 @@ namespace TinyCrm
                 i += 1;
                 uniqueId = true;
             }
+
+            Console.WriteLine(P[15].Price);
 
             //try
             //{
