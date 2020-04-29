@@ -50,17 +50,6 @@ namespace TinyCrm
                 i += 1;
                 uniqueId = true;
             }
-
-            Console.WriteLine(P[15].Price);
-
-            //try
-            //{
-            //    var dpnevmatikos = new Customer("123");
-            //} catch (Exception ex)
-            //{
-            //    Console.WriteLine($"{ex.Message}");
-            //}
-
         }
     }
 }
