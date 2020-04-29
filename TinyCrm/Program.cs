@@ -6,8 +6,14 @@ namespace TinyCrm
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
-            Console.WriteLine("Hello World 2!");
+            try
+            {
+                var dpnevmatikos = new Customer("123");
+            } catch (Exception ex)
+            {
+                Console.WriteLine($"{ex.Message}");
+            }
+            
         }
     }
 }
