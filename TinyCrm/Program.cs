@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace TinyCrm
 {
@@ -7,49 +9,71 @@ namespace TinyCrm
     {
         static void Main(string[] args)
         {
-            string path = @"C:\Users\ody_s\devel\tinyCRM\productList.txt";
-            bool uniqueId = true;
-            Random random = new Random();
-
-            if (!File.Exists(path))
-            {
-                Console.WriteLine("CSV file not found");
-            }
+            string path = @"productList.txt";
+            string[] productsFromFile;
 
             // Open the file to read from.
-            string[] readText = File.ReadAllLines(path);
-            Product[] P = new Product[readText.Length];
-            int i = 0;
-            foreach (string row in readText)
+            try
             {
-                string[] data = row.Split(';');
+                productsFromFile = File.ReadAllLines(path);
+            }
+            catch (FileNotFoundException e)
+            {
+                Console.WriteLine($"The file was not found: '{e}'");
+                return;
+            }
 
-                if (i > 0)
+
+            if (productsFromFile.Length == 0)
+            {
+                return;
+            }
+
+            var productsArray = new Product[productsFromFile.Length];
+
+            for (var i = 0; i < productsFromFile.Length; i++)
+            {
+                var isDuplicate = false;
+                var values = productsFromFile[i].Split(';');
+
+                foreach (var p in productsArray)
                 {
-                    for (int j = 0; j < i; j++)
+                    if (p != null && p.ProductId.Equals(values[0]))
                     {
-                        if (data[0] == P[j].ProductId)
-                        {
-                            uniqueId = false;
-                            //Console.WriteLine(P[j].ProductId);
-                            Console.WriteLine($"Product ID {data[0]} already exists");
-                            break;
-                        }
+                        isDuplicate = true;
                     }
                 }
 
-                if (uniqueId)
+                if (!isDuplicate)
                 {
-                    P[i] = new Product(data[0], data[1], data[2], Convert.ToDecimal(Math.Round(random.NextDouble() * 1000, 2)));
-                }
-                else
-                {
-                    P[i] = new Product("invalid", "invalid", "invalid", 0M);
-                }
+                    var product = new Product()
+                    {
+                        ProductId = values[0],
+                        Name = values[1],
+                        Description = values[2],
+                        Price = GetRandomPrice()
+                    };
 
-                i += 1;
-                uniqueId = true;
+                    productsArray[i] = product;
+                }
+            }
+
+            foreach (var p in productsArray)
+            {
+                if (p != null)
+                {
+                    Console.WriteLine($"{p.ProductId} {p.Name} {p.Price}");
+                }
             }
         }
+        public static decimal GetRandomPrice()
+        {
+            var random = new Random();
+            var randomNumber = random.NextDouble() * 100;
+            var roundedNumber = Math.Round(randomNumber, 2);
+            return (decimal)roundedNumber;
+        }
     }
+
+
 }

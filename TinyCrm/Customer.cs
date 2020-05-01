@@ -6,6 +6,7 @@ namespace TinyCrm
 {
     public class Customer
     {
+        public string CustomerId { get; set; }
         public DateTime Created { get; private set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
@@ -15,6 +16,7 @@ namespace TinyCrm
         public decimal TotalGross { get; private set; }
         public bool IsActive { get; set; }
         public int Age { get; set; }
+        public List<Order> OrderList = new List<Order>();
 
         public Customer(string vatNumber)
         {
@@ -49,22 +51,9 @@ namespace TinyCrm
 
             return true;
         }
-
-        //public bool IsValidEmail()
-        //{
-        //    if (!string.IsNullOrWhiteSpace(Email))
-        //    {
-        //        Email = Email.Trim();
-        //        if (Email.Contains("@") && Email.EndsWith(".com") || Email.EndsWith(".gr"))
-        //        {
-        //            return true;
-        //        }
-        //    }
-        //    return false;
-        //}
-
         public bool IsAdult()
         {
-            return Age >= 18;        }
+            return Age >= 18;
+        }
     }
 }
