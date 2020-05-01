@@ -16,8 +16,6 @@ namespace TinyCrm
         public decimal TotalGross { get; private set; }
         public bool IsActive { get; set; }
         public int Age { get; set; }
-        public List<Order> OrderList = new List<Order>();
-
         public Customer(string vatNumber)
         {
             if (!IsValidVatNumber(vatNumber))
