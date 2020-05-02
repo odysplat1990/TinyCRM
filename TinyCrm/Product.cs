@@ -10,5 +10,7 @@ namespace TinyCrm
         public string Description { get; set; }
         public string Name { get; set; }
         public decimal Price { get; set; }
+
+        public List<Order> OrderList = new List<Order>();
     }
 }

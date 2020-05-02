@@ -16,6 +16,13 @@ namespace TinyCrm
         public decimal TotalGross { get; private set; }
         public bool IsActive { get; set; }
         public int Age { get; set; }
+
+        public List<Order> OrderList = new List<Order>();
+
+        //public  CustomerOrderList (List<Order> order)
+        //{
+        //    OrderList = order;
+        //}
         public Customer(string vatNumber)
         {
             if (!IsValidVatNumber(vatNumber))
@@ -29,13 +36,13 @@ namespace TinyCrm
 
         public bool IsValidVatNumber(string vatNumber)
         {
-            if (string.IsNullOrWhiteSpace(VatNumber))
+            if (string.IsNullOrWhiteSpace(vatNumber))
             {
                 //Console.WriteLine($"length is equal to 0 or value is null");
                 return false;
             }
 
-            VatNumber = VatNumber.Trim();
+            VatNumber = vatNumber.Trim();
 
             if (VatNumber.Length != 9)
             {
