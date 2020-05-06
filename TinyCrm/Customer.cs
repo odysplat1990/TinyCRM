@@ -6,16 +6,15 @@ namespace TinyCrm
 {
     public class Customer
     {
-        public string CustomerId { get; set; }
+        public int CustomerId { get; set; }
         public DateTime Created { get; private set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Email { get; set; }
-        public string VatNumber { get; private set; }
+        public string VatNumber { get; set; }
         public string Phone { get; set; }
         public decimal TotalGross { get; private set; }
         public bool IsActive { get; set; }
-        public int Age { get; set; }
 
         public List<Order> OrderList = new List<Order>();
 
@@ -23,15 +22,19 @@ namespace TinyCrm
         //{
         //    OrderList = order;
         //}
-        public Customer(string vatNumber)
-        {
-            if (!IsValidVatNumber(vatNumber))
-            {
-                throw new Exception("Invalid Vat number");
-            }
+        //public Customer(string vatNumber)
+        //{
+        //    if (!IsValidVatNumber(vatNumber))
+        //    {
+        //        throw new Exception("Invalid Vat number");
+        //    }
 
-            VatNumber = vatNumber;
-            Created = DateTime.Now;
+        //    VatNumber = vatNumber;
+        //    Created = DateTime.Now;
+        //}
+
+        public Customer()
+        {
         }
 
         public bool IsValidVatNumber(string vatNumber)
@@ -56,9 +59,9 @@ namespace TinyCrm
 
             return true;
         }
-        public bool IsAdult()
-        {
-            return Age >= 18;
-        }
+        //public bool IsAdult()
+        //{
+        //    return Age >= 18;
+        //}
     }
 }
