@@ -9,178 +9,59 @@ namespace TinyCrm
     {
         static void Main(string[] args)
         {
-            //string path = @"productList.txt";
-            //string[] productsFromFile;
-
-            //// Open the file to read from.
-            //try
-            //{
-            //    productsFromFile = File.ReadAllLines(path);
-            //}
-            //catch (FileNotFoundException e)
-            //{
-            //    Console.WriteLine($"The file was not found: '{e}'");
-            //    return;
-            //}
-
-
-            //if (productsFromFile.Length == 0)
-            //{
-            //    return;
-            //}
-            ////List with products of UNIQUE id's*********************************************************
-            ////var productsArray = new Product[productsFromFile.Length];
-            //var productsList = new List<Product>();
-
-            //for (var i = 0; i < productsFromFile.Length; i++)
-            //{
-            //    var values = productsFromFile[i].Split(';');
-            //    var productId = values[0];
-
-            //    var l = productsList.Where(product => product.ProductId.Equals(productId));
-
-            //    if (l.Count() > 0)
-            //    {
-            //        continue;
-            //    }
-
-            //    var product = new Product()
-            //    {
-            //        ProductId = values[0],
-            //        Name = values[1],
-            //        Description = values[2],
-            //        Price = GetRandomPrice()
-            //    };
-
-            //    productsList.Add(product);
-            //}
-
-            //var order1 = new Order();
-            //var order2 = new Order();
-
-            //// Orders with 10 randomly selected products**************************************************
-            //List<int> firstList = CreateRandomUnique(productsList.Count());
-            //List<int> secondtList = CreateRandomUnique(productsList.Count());
-
-            //for (int j = 0; j < 10; j++) //to FOREACH den ginotan na xrhsimopoihthei
-            //{
-            //    order1.ProductList.Add(productsList[firstList[j]]);
-            //    productsList[firstList[j]].OrderList.Add(order1);
-            //    order2.ProductList.Add(productsList[secondtList[j]]);
-            //    productsList[secondtList[j]].OrderList.Add(order2);
-            //    //Console.WriteLine(myList[j]);
-            //}
-
-
-
-            ////Create two Customers************************************************************************
-            //decimal customerValue1 = 0m;
-            //decimal customerValue2 = 0m;
-
-            //try
-            //{
-            //    var customer1 = new Customer("123456789");
-            //    customer1.OrderList.Add(order1);
-            //    customerValue1 = customer1.OrderList[0].Total();
-            //    //for (int j = 0; j < 10; j++) //to FOREACH den ginotan na xrhsimopoihthei
-            //    //{
-            //    //    Console.WriteLine(customer1.OrderList[0].ProductList[j].Description);
-            //    //}
-            //    //Console.WriteLine(customer1.OrderList[0].OrderId);
-            //    //customerValue1 = customer1.OrderList[0].TotalAmount;
-            //    //Console.WriteLine(customerValue1);
-            //}
-            //catch (Exception)
-            //{
-            //    return;
-            //}
-            //try
-            //{
-            //    var customer2 = new Customer("111111111");
-            //    customer2.OrderList.Add(order2);
-            //    customerValue2 = customer2.OrderList[0].Total();
-            //    //Console.WriteLine(customerValue2);
-            //}
-            //catch (Exception)
-            //{
-            //    return;
-            //}
-
-            ////output the most valuable customer*************************************************
-            //if (customerValue1 > customerValue2)
-            //{
-            //    Console.WriteLine($"the most valuable customer is customer1");
-            //}
-            //else if (customerValue1 < customerValue2)
-            //{
-            //    Console.WriteLine($"the most valuable customer is customer2");
-            //}
-            //else
-            //{
-            //    Console.WriteLine($"both customers spend the same");
-            //}
-
-            ////5 most sold products
-            //var sdf = productsList.OrderByDescending(product => product.OrderList.Count());
-            //for (int i = 0; i < 5; i++)
-            //{
-            //    Console.WriteLine(sdf.ToList()[i].ProductId);
-            //}
-
-            var tinyCrmDbContext = new TinyCrmDbContext();
-
-            // Insert
-            var customer = new Customer()
+            var custOptions = new CustomerOptions()
             {
                 FirstName = "Georgio",
-                LastName = "Oikonomou",
-                Email = "goikonomou@dotnetacademy.gr"
+                //LastName = "Platsakis",
+                //VatNumber = "987654321",
+                CustomerId = 4,
+                //CreateFrom = new DateTime(2020, 5, 5),
+                //CreateTo = DateTime.Now
             };
 
-            tinyCrmDbContext.Add(customer);
-            tinyCrmDbContext.SaveChanges();
-
-            //  Get data
-            var customer2 = tinyCrmDbContext
-                .Set<Customer>()
-                .Where(c => c.CustomerId == 2)
-                .SingleOrDefault();
-
-            // Update
-            customer2.VatNumber = "123456789";
-            tinyCrmDbContext.SaveChanges();
-
-            // Remove
-            tinyCrmDbContext.Remove(customer2);
-            tinyCrmDbContext.SaveChanges();
-        }
-        public static decimal GetRandomPrice()
-        {
-            var random = new Random();
-            var randomNumber = random.NextDouble() * 100;
-            var roundedNumber = Math.Round(randomNumber, 2);
-            return (decimal)roundedNumber;
-        }
-
-        public static List<int> CreateRandomUnique(int productListSize)
-        {
-            Random rand = new Random();
-            int myNumber;
-            var j = 0;
-            List<int> randomList = new List<int>();
-
-            while (j < 10)
+            var prodOptions = new ProductOptions()
             {
-                myNumber = rand.Next(productListSize - 1);
-                if (!randomList.Contains(myNumber))
-                {
-                    randomList.Add(myNumber);
-                    j++;
-                }
+                ProductId = 4,
+                Categories = "sports",
+                PriceFrom = 45,
+                PriceTo = 80
+            };
+
+            List<Customer> customerList = SearchCustomers(custOptions);
+            foreach (Customer customer in customerList)
+            {
+                Console.WriteLine(customer.CustomerId);
             }
-            return randomList;
+
+            Console.WriteLine(customerList.Count);
+        }
+        public static List<Customer> SearchCustomers(CustomerOptions options)
+        {
+            var tinyCrmDbContext = new TinyCrmDbContext();
+            var customerList = tinyCrmDbContext
+                .Set<Customer>()
+                .Where(c => ((c.FirstName == options.FirstName || options.FirstName == null)
+                && (c.LastName == options.LastName || options.LastName == null)
+                && (c.VatNumber == options.VatNumber || options.VatNumber == null)
+                && (DateTime.Compare(c.Created, options.CreateFrom) >= 0 || options.CreateFrom == null)
+                && (DateTime.Compare(c.Created, options.CreateTo) <= 0 || options.CreateTo == null)
+                && (c.CustomerId == options.CustomerId || options.CustomerId == 0)))
+                .Take(500)
+                .ToList();
+            return customerList;
+        }
+
+        public static List<Product> SearchProducts(ProductOptions options)
+        {
+            var tinyCrmDbContext = new TinyCrmDbContext();
+            var productList = tinyCrmDbContext
+                .Set<Product>()
+                .Where(p => ((p.ProductId == options.ProductId || options.ProductId == 0))
+                && (p.Price >= options.PriceFrom || options.PriceFrom == 0)
+                && (p.Price <= options.PriceTo || options.PriceTo == 0)
+                && (p.ProductCategory == options.Categories || options.Categories == null))
+                .ToList();
+            return productList;
         }
     }
-
-
 }

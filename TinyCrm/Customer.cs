@@ -18,50 +18,9 @@ namespace TinyCrm
 
         public List<Order> OrderList = new List<Order>();
 
-        //public  CustomerOrderList (List<Order> order)
-        //{
-        //    OrderList = order;
-        //}
-        //public Customer(string vatNumber)
-        //{
-        //    if (!IsValidVatNumber(vatNumber))
-        //    {
-        //        throw new Exception("Invalid Vat number");
-        //    }
-
-        //    VatNumber = vatNumber;
-        //    Created = DateTime.Now;
-        //}
-
         public Customer()
         {
+            Created = DateTime.Now;
         }
-
-        public bool IsValidVatNumber(string vatNumber)
-        {
-            if (string.IsNullOrWhiteSpace(vatNumber))
-            {
-                //Console.WriteLine($"length is equal to 0 or value is null");
-                return false;
-            }
-
-            VatNumber = vatNumber.Trim();
-
-            if (VatNumber.Length != 9)
-            {
-                return false;
-            }
-
-            if (!int.TryParse(VatNumber, out int number))
-            {
-                return false;
-            }
-
-            return true;
-        }
-        //public bool IsAdult()
-        //{
-        //    return Age >= 18;
-        //}
     }
 }

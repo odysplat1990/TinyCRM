@@ -19,6 +19,10 @@ namespace TinyCrm
             modelBuilder
                 .Entity<Customer>()
                 .ToTable("Customer");
+
+            modelBuilder
+                .Entity<Product>()
+                .ToTable("Product");
         }
     }
 }
