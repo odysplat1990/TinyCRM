@@ -10,8 +10,8 @@ using TinyCrm;
 namespace TinyCrm.Migrations
 {
     [DbContext(typeof(TinyCrmDbContext))]
-    [Migration("20200507132519_trial")]
-    partial class trial
+    [Migration("20200508164151_myMigration")]
+    partial class myMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -34,16 +34,13 @@ namespace TinyCrm.Migrations
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("FirstName")
+                    b.Property<string>("Firstname")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
-                    b.Property<string>("LastName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Phone")
+                    b.Property<string>("Lastname")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("TotalGross")
@@ -57,12 +54,51 @@ namespace TinyCrm.Migrations
                     b.ToTable("Customer");
                 });
 
-            modelBuilder.Entity("TinyCrm.Product", b =>
+            modelBuilder.Entity("TinyCrm.Order", b =>
                 {
-                    b.Property<int>("ProductId")
+                    b.Property<int>("OrderId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTimeOffset>("Created")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<int?>("CustomerId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("DeliveryAddress")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("OrderId");
+
+                    b.HasIndex("CustomerId");
+
+                    b.ToTable("Order");
+                });
+
+            modelBuilder.Entity("TinyCrm.OrderProduct", b =>
+                {
+                    b.Property<string>("ProductId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("OrderId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ProductId", "OrderId");
+
+                    b.HasIndex("OrderId");
+
+                    b.ToTable("OrderProduct");
+                });
+
+            modelBuilder.Entity("TinyCrm.Product", b =>
+                {
+                    b.Property<string>("ProductId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("Category")
+                        .HasColumnType("int");
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
@@ -73,12 +109,31 @@ namespace TinyCrm.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<string>("ProductCategory")
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("ProductId");
 
                     b.ToTable("Product");
+                });
+
+            modelBuilder.Entity("TinyCrm.Order", b =>
+                {
+                    b.HasOne("TinyCrm.Customer", null)
+                        .WithMany("Orders")
+                        .HasForeignKey("CustomerId");
+                });
+
+            modelBuilder.Entity("TinyCrm.OrderProduct", b =>
+                {
+                    b.HasOne("TinyCrm.Order", "Order")
+                        .WithMany("OrderProducts")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TinyCrm.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

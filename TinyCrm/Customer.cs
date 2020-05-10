@@ -1,26 +1,31 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace TinyCrm
 {
     public class Customer
     {
         public int CustomerId { get; set; }
-        public DateTime Created { get; private set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
+        public DateTime Created { get; set; }
+        public string Firstname { get; set; }
+        public string Lastname { get; set; }
         public string Email { get; set; }
         public string VatNumber { get; set; }
-        public string Phone { get; set; }
-        public decimal TotalGross { get; private set; }
+        public decimal TotalGross { get; set; }
         public bool IsActive { get; set; }
 
-        public List<Order> OrderList = new List<Order>();
+        public List<Order> Orders { get; set; }
 
         public Customer()
         {
-            Created = DateTime.Now;
+            Orders = new List<Order>();
+        }
+
+        public bool IsValidVatNumber(string vatNumber)
+        {
+            return
+                !string.IsNullOrWhiteSpace(vatNumber) &&
+                vatNumber.Length == 9;
         }
     }
 }

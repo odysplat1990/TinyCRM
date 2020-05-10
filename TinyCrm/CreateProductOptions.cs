@@ -1,6 +1,10 @@
-﻿namespace TinyCrm
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace TinyCrm
 {
-    public class Product
+    public class CreateProductOptions
     {
         public string ProductId { get; set; }
         public string Description { get; set; }

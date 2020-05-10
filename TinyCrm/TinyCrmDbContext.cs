@@ -9,7 +9,9 @@ namespace TinyCrm
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Server =localhost; Database =tinycrm; User Id =sa; Password =admin!@#123;");
+            base.OnConfiguring(optionsBuilder);
+
+            optionsBuilder.UseSqlServer("Server=localhost;Database=tinycrm;User Id=sa;Password=admin!@#123;");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -23,6 +25,18 @@ namespace TinyCrm
             modelBuilder
                 .Entity<Product>()
                 .ToTable("Product");
+
+            modelBuilder
+                .Entity<Order>()
+                .ToTable("Order");
+
+            modelBuilder
+                .Entity<OrderProduct>()
+                .ToTable("OrderProduct");
+
+            modelBuilder
+                .Entity<OrderProduct>()
+                .HasKey(op => new { op.ProductId, op.OrderId });
         }
     }
 }
