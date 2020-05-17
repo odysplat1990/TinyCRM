@@ -3,6 +3,10 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using TinyCrm.Core.Data;
+using TinyCrm.Core.Service;
+using TinyCrm.Core.Service.Options;
+using TinyCrm.Core.Services;
 
 namespace TinyCrm
 {
@@ -16,48 +20,13 @@ namespace TinyCrm
                 ICustomerService customerService = new CustomerService(context);
                 IOrderService orderService = new OrderService(context, customerService, productService);
 
-                //var product1 = productService.CreateProduct(new CreateProductOptions()
-                //{
-                //    Name = "headphones",
-                //    Price = 63,
-                //    ProductId = "3"
-                //});
 
-                //var product2 = productService.SearchProducts(new SearchProductOptions()
-                //{
-                //    PriceFrom = 50
-                //}).ToList();
-
-                //foreach (var p in product2)
-                //{
-                //    Console.WriteLine(p.Name);
-                //}
-
-                //var product2 = productService.UpdateProduct(new UpdateProductOptions()
-                //{
-                //    Price = 15,
-                //    ProductId = "123"
-                //});
-
-                var product2 = productService.GetProductById("123456");
-                Console.WriteLine(product2.Name);
-
-                //List<string> prodIds = new List<string>();
-                //prodIds.Add("123");
-                //prodIds.Add("1234");
-
-                //var order1 = orderService.CreateOrder(new CreateOrderOptions()
-                //{
-                //    DeliveryAddress = "koukaki",
-                //    CustomerId = 3,
-                //     ProductIds = prodIds
-                //}); 
-
-                var order = orderService.SearchOrders(new SearchOrderOptions()
+                var customer = customerService.CreateCustomer(new CreateCustomerOptions()
                 {
-                    DeliveryAddress = "koukaki"
-                }).ToList();
-                Console.WriteLine(order[0].OrderId);
+                    FirstName = "Dimitris",
+                    LastName = "Pnevmatikos",
+                    VatNumber = "123456789"
+                });
             }
         }
     }
